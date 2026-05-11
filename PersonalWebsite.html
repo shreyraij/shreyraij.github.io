@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shrey Jain</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a08; --surface: #111110; --border: #222220;
+      --accent: #c8f060; --accent2: #60c8f0;
+      --text: #e8e8e0; --muted: #888880; --tag-bg: #1a1a18;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 300; line-height: 1.6; overflow-x: hidden; }
+    body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; opacity: 0.4; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 4rem; border-bottom: 1px solid var(--border); background: rgba(10,10,8,0.85); backdrop-filter: blur(12px); }
+    .nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.2rem; color: var(--accent); text-decoration: none; letter-spacing: -0.02em; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-family: 'DM Mono', monospace; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--accent); }
+    #hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 8rem 4rem 4rem; position: relative; border-bottom: 1px solid var(--border); }
+    .hero-eyebrow { font-family: 'DM Mono', monospace; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.6s ease forwards 0.2s; }
+    .hero-name { font-family: 'DM Serif Display', serif; font-size: clamp(3.5rem, 9vw, 8rem); line-height: 0.95; letter-spacing: -0.03em; color: var(--text); margin-bottom: 2rem; opacity: 0; animation: fadeUp 0.7s ease forwards 0.35s; }
+    .hero-name em { font-style: italic; color: var(--accent); }
+    .hero-desc { max-width: 560px; color: var(--muted); font-size: 1.05rem; line-height: 1.7; margin-bottom: 3rem; opacity: 0; animation: fadeUp 0.7s ease forwards 0.5s; }
+    .hero-links { display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.7s ease forwards 0.65s; }
+    .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: 4px; font-family: 'DM Mono', monospace; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; transition: all 0.2s; cursor: pointer; border: none; }
+    .btn-primary { background: var(--accent); color: #0a0a08; font-weight: 500; }
+    .btn-primary:hover { background: #d4f570; transform: translateY(-1px); }
+    .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+    .hero-grid { position: absolute; right: 4rem; bottom: 4rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); opacity: 0; animation: fadeUp 0.7s ease forwards 0.8s; }
+    .hero-stat { background: var(--bg); padding: 1.5rem 2rem; text-align: center; }
+    .hero-stat-num { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--accent); display: block; }
+    .hero-stat-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+    section { padding: 6rem 4rem; border-bottom: 1px solid var(--border); }
+    .section-label { font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent2); margin-bottom: 3rem; display: flex; align-items: center; gap: 1rem; }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); max-width: 200px; }
+    .section-title { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 4vw, 3.2rem); letter-spacing: -0.02em; margin-bottom: 3rem; line-height: 1.1; }
+    .exp-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+    .exp-card { background: var(--surface); padding: 2.5rem 3rem; transition: background 0.2s; }
+    .exp-card:hover { background: #141412; }
+    .exp-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; gap: 2rem; }
+    .exp-company { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--text); }
+    .exp-date { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); white-space: nowrap; letter-spacing: 0.05em; padding-top: 0.3rem; }
+    .exp-role { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--accent); letter-spacing: 0.06em; margin-bottom: 0.5rem; }
+    .exp-descriptor { font-size: 0.82rem; color: var(--muted); font-style: italic; margin-bottom: 1rem; padding: 0.5rem 0.75rem; border-left: 2px solid var(--accent2); background: rgba(96,200,240,0.04); }
+    .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .exp-bullets li { font-size: 0.9rem; color: var(--muted); padding-left: 1.2rem; position: relative; line-height: 1.6; }
+    .exp-bullets li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 0.75rem; }
+    .pub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+    .pub-card { background: var(--surface); padding: 2.5rem; transition: background 0.2s; }
+    .pub-card:hover { background: #141412; }
+    .pub-venue { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent2); margin-bottom: 0.75rem; }
+    .pub-title { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--text); line-height: 1.3; margin-bottom: 1rem; }
+    .pub-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.5rem; }
+    .pub-link { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--accent); text-decoration: none; letter-spacing: 0.06em; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
+    .pub-link:hover { border-color: var(--accent); }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+    .skill-group { background: var(--surface); padding: 2rem; }
+    .skill-group-title { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent2); margin-bottom: 1rem; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .skill-tag { background: var(--tag-bg); border: 1px solid var(--border); color: var(--muted); font-family: 'DM Mono', monospace; font-size: 0.72rem; padding: 0.3rem 0.65rem; border-radius: 2px; transition: all 0.2s; }
+    .skill-tag:hover { border-color: var(--accent); color: var(--accent); }
+    #contact { text-align: center; padding: 8rem 4rem; }
+    .contact-title { font-family: 'DM Serif Display', serif; font-size: clamp(2.5rem, 6vw, 5rem); letter-spacing: -0.03em; margin-bottom: 1.5rem; }
+    .contact-title em { color: var(--accent); font-style: italic; }
+    .contact-sub { color: var(--muted); margin-bottom: 3rem; font-size: 1rem; max-width: 400px; margin-left: auto; margin-right: auto; }
+    .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+    footer { padding: 2rem 4rem; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); }
+    footer p { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--muted); letter-spacing: 0.05em; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    @media (max-width: 768px) {
+      nav { padding: 1.2rem 1.5rem; } .nav-links { gap: 1.2rem; }
+      #hero { padding: 7rem 1.5rem 12rem; } .hero-grid { right: 1.5rem; bottom: 1.5rem; }
+      section { padding: 4rem 1.5rem; } .pub-grid { grid-template-columns: 1fr; }
+      .exp-card { padding: 1.8rem; } footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">SJ</a>
+  <ul class="nav-links">
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#publications">Research</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <p class="hero-eyebrow">// Purdue University · CS + Data Science · Class of 2027</p>
+  <h1 class="hero-name">Shrey<br/><em>Jain.</em></h1>
+  <p class="hero-desc">Software engineer and researcher building at the intersection of machine learning, optimization, and real-world systems. Published first author at AIAA and arXiv.</p>
+  <div class="hero-links">
+    <a href="mailto:shreyraij@gmail.com" class="btn btn-primary">Get in Touch</a>
+    <a href="https://www.linkedin.com/in/shreyraijain/" target="_blank" class="btn btn-outline">LinkedIn</a>
+    <a href="https://scholar.google.com/citations?user=JPQISZMAAAAJ&hl=en" target="_blank" class="btn btn-outline">Google Scholar</a>
+  </div>
+  <div class="hero-grid">
+    <div class="hero-stat"><span class="hero-stat-num">2</span><span class="hero-stat-label">Publications</span></div>
+    <div class="hero-stat"><span class="hero-stat-num">AIAA</span><span class="hero-stat-label">First Author</span></div>
+    <div class="hero-stat"><span class="hero-stat-num">Top 5%</span><span class="hero-stat-label">Kaggle</span></div>
+    <div class="hero-stat"><span class="hero-stat-num">~98.5%</span><span class="hero-stat-label">CNN Accuracy</span></div>
+  </div>
+</section>
+
+<section id="experience">
+  <p class="section-label">Experience</p>
+  <h2 class="section-title">Where I've<br/>worked.</h2>
+  <div class="exp-list reveal">
+
+    <div class="exp-card">
+      <div class="exp-top">
+        <div><div class="exp-company">AstraZeneca</div><div class="exp-role">Data Science Undergraduate Researcher</div></div>
+        <div class="exp-date">Aug 2025 – Present</div>
+      </div>
+      <div class="exp-descriptor">Partnered with AstraZeneca's Mt. Vernon team via Purdue's Data Mine program.</div>
+      <ul class="exp-bullets">
+        <li>Conducted exploratory data analysis on unstructured equipment logs and sensor data using Python, Pandas, and NumPy, surfacing key manufacturing process inefficiencies</li>
+        <li>Developed LLM pipelines using Hugging Face Llama 3.2 and PyTorch to extract actionable insights from manufacturing data</li>
+        <li>Implemented semantic search with ChromaDB, accelerating root-cause analysis by 40% and reducing manual data review time</li>
+        <li>Designed interactive Power BI dashboards to visualize pharmaceutical manufacturing trends for stakeholder decisions</li>
+      </ul>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-top">
+        <div><div class="exp-company">Purdue Momentum</div><div class="exp-role">Full-Stack Software Engineer</div></div>
+        <div class="exp-date">Aug 2025 – Present</div>
+      </div>
+      <div class="exp-descriptor">Student-run product studio building real-world software.</div>
+      <ul class="exp-bullets">
+        <li>Developing TimeSense, a cross-platform Electron.js app to track focus and recommend work/break cycles</li>
+        <li>Implementing Python pipelines with SQLite to log activity and generate weekly productivity insights</li>
+        <li>Integrating activity recognition APIs and dashboards to provide actionable insights for teams</li>
+      </ul>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-top">
+        <div><div class="exp-company">Blast AI</div><div class="exp-role">Molecular Embeddings Researcher</div></div>
+        <div class="exp-date">Jun 2023 – Oct 2023</div>
+      </div>
+      <ul class="exp-bullets">
+        <li>Employed SMILES embeddings and vector search to analyze molecular structures, improving query efficiency for drug discovery</li>
+        <li>Utilized natural language embeddings to model molecular interactions, enabling prediction of emergent properties</li>
+        <li>Built a specialized chemical search engine to enhance drug development workflows</li>
+      </ul>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-top">
+        <div><div class="exp-company">Blast AI</div><div class="exp-role">Computer Vision Researcher</div></div>
+        <div class="exp-date">Jun 2022 – Dec 2022</div>
+      </div>
+      <ul class="exp-bullets">
+        <li>Developed a VGG-19 CNN achieving ~98.5% accuracy for contrail detection across diverse cloud type datasets</li>
+        <li>Implemented a visual transformer model with state-of-the-art accuracy in ground-based contrail detection</li>
+        <li>Pioneered methods to calculate alternative flight paths avoiding contrail-dense regions to reduce aviation carbon emissions</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<section id="publications">
+  <p class="section-label">Research</p>
+  <h2 class="section-title">Published<br/>work.</h2>
+  <div class="pub-grid reveal">
+    <div class="pub-card">
+      <div class="pub-venue">AIAA 2023 · First Author · Blast AI</div>
+      <div class="pub-title">Utilizing Computer Vision Algorithms to Detect Contrails</div>
+      <div class="pub-desc">Developed a VGG-19 CNN achieving ~98.5% accuracy for contrail detection. Implemented a visual transformer and pioneered methods to calculate alternative flight paths to reduce aviation carbon emissions.</div>
+      <a href="https://arc.aiaa.org/doi/10.2514/6.2023-3769" target="_blank" class="pub-link">View AIAA Paper →</a>
+    </div>
+    <div class="pub-card">
+      <div class="pub-venue">arXiv · Blast AI · 2023</div>
+      <div class="pub-title">Unsupervised Learning of Molecular Embeddings for Enhanced Clustering and Emergent Properties for Chemical Compounds</div>
+      <div class="pub-desc">Employed SMILES embeddings and vector search to analyze molecular structures, improving query efficiency for drug discovery. Built a specialized search engine to enhance chemical exploration.</div>
+      <a href="https://arxiv.org/abs/2310.18367" target="_blank" class="pub-link">View on arXiv →</a>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <p class="section-label">Skills</p>
+  <h2 class="section-title">Technical<br/>toolkit.</h2>
+  <div class="skills-grid reveal">
+    <div class="skill-group">
+      <div class="skill-group-title">Languages</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Python</span><span class="skill-tag">Java</span><span class="skill-tag">C</span>
+        <span class="skill-tag">JavaScript</span><span class="skill-tag">R</span><span class="skill-tag">MATLAB</span>
+        <span class="skill-tag">MySQL</span><span class="skill-tag">HTML/CSS</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">ML / AI</div>
+      <div class="skill-tags">
+        <span class="skill-tag">PyTorch</span><span class="skill-tag">Hugging Face</span><span class="skill-tag">Scikit-learn</span>
+        <span class="skill-tag">ChromaDB</span><span class="skill-tag">Llama 3.2</span><span class="skill-tag">CNNs</span>
+        <span class="skill-tag">Transformers</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Frameworks & Tools</div>
+      <div class="skill-tags">
+        <span class="skill-tag">React</span><span class="skill-tag">Electron.js</span><span class="skill-tag">Pandas</span>
+        <span class="skill-tag">NumPy</span><span class="skill-tag">Matplotlib</span><span class="skill-tag">SQLite</span>
+        <span class="skill-tag">Power BI</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Dev Environment</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Git</span><span class="skill-tag">Linux</span><span class="skill-tag">Unix</span>
+        <span class="skill-tag">Jupyter</span><span class="skill-tag">LaTeX</span><span class="skill-tag">IntelliJ</span>
+        <span class="skill-tag">VS Code</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <p class="section-label" style="justify-content:center;">Contact</p>
+  <h2 class="contact-title">Let's <em>talk.</em></h2>
+  <p class="contact-sub">Open to opportunities, research collaborations, and interesting problems.</p>
+  <div class="contact-links">
+    <a href="mailto:shreyraij@gmail.com" class="btn btn-primary">shreyraij@gmail.com</a>
+    <a href="https://www.linkedin.com/in/shreyraijain/" target="_blank" class="btn btn-outline">LinkedIn</a>
+    <a href="https://scholar.google.com/citations?user=JPQISZMAAAAJ&hl=en" target="_blank" class="btn btn-outline">Google Scholar</a>
+    <a href="tel:4086470777" class="btn btn-outline">408-647-0777</a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Shrey Jain</p>
+  <p>Saratoga, CA · Purdue University</p>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
